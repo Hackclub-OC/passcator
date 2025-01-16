@@ -37,6 +37,6 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: 'Password Strength Indicator',
+  title: 'PassCator',
   description: 'A robust password strength indicator with customizable requirements',
 }

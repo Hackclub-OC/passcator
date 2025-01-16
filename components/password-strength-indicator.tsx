@@ -51,10 +51,10 @@ export default function PasswordStrengthIndicator() {
               <span className="sr-only">Toggle theme</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-56">
+          <PopoverContent className="w-40">
             <div className="grid gap-4">
-              <h4 className="font-medium leading-none">Choose theme</h4>
-              <div className="grid grid-cols-3 gap-2">
+              {/* <h4 className="font-medium leading-none">Choose theme</h4> */}
+              <div className="grid grid-cols-1 gap-2">
                 <Button variant="outline" size="sm" onClick={() => setTheme("light")}>
                   <Sun className="mr-1 h-4 w-4" />
                   Light
