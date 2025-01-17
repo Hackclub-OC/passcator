@@ -1,24 +1,31 @@
 "use client";
 
 import { useState, useId, useMemo } from "react";
-import { Eye, Check, X, Sun, Moon, Laptop } from 'lucide-react';
+import { Eye, Check, X, Sun, Moon, Laptop } from "lucide-react";
 import EyeOff from "@/components/ui/eye-off";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
-import { usePasswordRequirements, PasswordRequirement } from './password-requirements';
-import { StrengthIndicator } from './strength-indicator';
+import {
+  usePasswordRequirements,
+  PasswordRequirement,
+} from "./password-requirements";
+import { StrengthIndicator } from "./strength-indicator";
 
 export default function PasswordStrengthIndicator() {
   const id = useId();
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme = 'system', setTheme } = useTheme();
   const { requirements, toggleRequirement } = usePasswordRequirements();
 
   const toggleVisibility = () => setIsVisible((prev) => !prev);
@@ -36,18 +43,32 @@ export default function PasswordStrengthIndicator() {
   const strengthScore = useMemo(() => {
     const enabledRequirements = requirements.filter((req) => req.enabled);
     const metRequirements = strength.filter((req) => req.met && req.enabled);
-    return Math.floor((metRequirements.length / enabledRequirements.length) * 6);
+    return Math.floor(
+      (metRequirements.length / enabledRequirements.length) * 6
+    );
   }, [strength, requirements]);
+
+  const switchThemeIcon = () => {
+    switch (theme) {
+      case "dark":
+        return <Moon className="h-[1.2rem] w-[1.2rem]" />;
+      case "light":
+        return <Sun className="h-[1.2rem] w-[1.2rem]" />;
+      default:
+        return <Laptop className="h-[1.2rem] w-[1.2rem]" />;
+    }
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto my-8 border-t border-b md:border-x bg-white dark:bg-black">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-2xl font-bold text-neutral-900 dark:text-white">Password Strength Indicator</CardTitle>
+        <CardTitle className="text-2xl font-bold text-neutral-900 dark:text-white">
+          Password Strength Indicator
+        </CardTitle>
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" size="icon">
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              {switchThemeIcon()}
               <span className="sr-only">Toggle theme</span>
             </Button>
           </PopoverTrigger>
@@ -55,15 +76,27 @@ export default function PasswordStrengthIndicator() {
             <div className="grid gap-4">
               {/* <h4 className="font-medium leading-none">Choose theme</h4> */}
               <div className="grid grid-cols-1 gap-2">
-                <Button variant="outline" size="sm" onClick={() => setTheme("light")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTheme("light")}
+                >
                   <Sun className="mr-1 h-4 w-4" />
                   Light
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setTheme("dark")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTheme("dark")}
+                >
                   <Moon className="mr-1 h-4 w-4" />
                   Dark
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setTheme("system")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTheme("system")}
+                >
                   <Laptop className="mr-1 h-4 w-4" />
                   System
                 </Button>
@@ -113,7 +146,9 @@ export default function PasswordStrengthIndicator() {
         <StrengthIndicator strengthScore={strengthScore} />
 
         <div className="space-y-2">
-          <p className="text-sm font-medium text-neutral-900 dark:text-white">Password requirements:</p>
+          <p className="text-sm font-medium text-neutral-900 dark:text-white">
+            Password requirements:
+          </p>
           <ul className="space-y-1" aria-label="Password requirements">
             {strength.map((req, index) => (
               <motion.li
@@ -130,19 +165,39 @@ export default function PasswordStrengthIndicator() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 20,
+                      }}
                     >
                       {req.met ? (
-                        <Check size={16} className="text-emerald-500 dark:text-emerald-400" aria-hidden="true" />
+                        <Check
+                          size={16}
+                          className="text-emerald-500 dark:text-emerald-400"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <X size={16} className="text-neutral-500 dark:text-neutral-400" aria-hidden="true" />
+                        <X
+                          size={16}
+                          className="text-neutral-500 dark:text-neutral-400"
+                          aria-hidden="true"
+                        />
                       )}
                     </motion.div>
                   </AnimatePresence>
-                  <span className={cn(req.met ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-700 dark:text-neutral-300")}>
+                  <span
+                    className={cn(
+                      req.met
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-neutral-700 dark:text-neutral-300"
+                    )}
+                  >
                     {req.text}
                     <span className="sr-only">
-                      {req.met ? " - Requirement met" : " - Requirement not met"}
+                      {req.met
+                        ? " - Requirement met"
+                        : " - Requirement not met"}
                     </span>
                   </span>
                 </div>
@@ -162,4 +217,3 @@ export default function PasswordStrengthIndicator() {
     </Card>
   );
 }
-
