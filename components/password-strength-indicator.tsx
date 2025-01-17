@@ -136,7 +136,7 @@ export default function PasswordStrengthIndicator() {
                   exit={{ opacity: 0, rotate: 180 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {isVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {isVisible ? <EyeOff /> : <Eye size={20} />}
                 </motion.div>
               </AnimatePresence>
             </motion.button>
